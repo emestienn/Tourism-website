@@ -63,19 +63,30 @@
 <!-- ============ HERO ============ -->
 <section id="home" class="hero">
   <div class="hero-bg"></div>
+  <div class="hero-orbs" aria-hidden="true">
+    <span class="hero-orb o1"></span>
+    <span class="hero-orb o2"></span>
+    <span class="hero-orb o3"></span>
+  </div>
+  <div class="hero-icons" aria-hidden="true">
+    <span class="hero-icon ic1">🕌</span>
+    <span class="hero-icon ic2">🧭</span>
+    <span class="hero-icon ic3">✈</span>
+    <span class="hero-icon ic4">🏜</span>
+  </div>
   <div class="hero-content">
-    <div class="tag" data-i18n="heroTag">SUN'IY INTELLEKT YORDAMIDA</div>
-    <h1 data-i18n="heroTitle">O'zbekistonni <span class="gradient">aqlli</span> kashf et</h1>
-    <p data-i18n="heroText">
+    <div class="tag hero-in" style="--d:0s" data-i18n="heroTag">SUN'IY INTELLEKT YORDAMIDA</div>
+    <h1 class="hero-in" style="--d:.12s" data-i18n="heroTitle">O'zbekistonni <span class="gradient">aqlli</span> kashf et</h1>
+    <p class="hero-in" style="--d:.24s" data-i18n="heroText">
       Shahar, kun va budjetni tanlang — biz sizga shaxsiy marshrut, xarajat
       hisobi va real tavsiyalar tayyorlaymiz.
     </p>
-    <div class="hero-cta">
+    <div class="hero-cta hero-in" style="--d:.36s">
       <a href="#planner" class="btn btn-primary" data-i18n="ctaStart">Sayohatni boshlash</a>
       <a href="#explore" class="btn btn-ghost" data-i18n="ctaExplore">Joyları ko'rish</a>
     </div>
 
-    <div class="hero-stats">
+    <div class="hero-stats hero-in" style="--d:.48s">
       <div><b data-count="12">0</b><span data-i18n="statCities">Shahar</span></div>
       <div><b data-count="150">0</b><span data-i18n="statPlaces">Joylar</span></div>
       <div><b data-count="3">0</b><span data-i18n="statLangs">Tillar</span></div>
@@ -83,6 +94,9 @@
     </div>
   </div>
   <a href="#planner" class="hero-scroll">↓</a>
+  <svg class="hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,50 L1440,100 L0,100 Z"></path>
+  </svg>
 </section>
 
 <!-- ============ PLANNER ============ -->

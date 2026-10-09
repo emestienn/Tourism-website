@@ -30,6 +30,22 @@
   50%     { background-position: 100% 50%; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes orbDrift1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(50px,34px) scale(1.12); }
+}
+@keyframes orbDrift2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-36px,-44px) scale(1.16); }
+}
+@keyframes orbDrift3 {
+  0%,100% { transform: translate(-50%,0) scale(1); opacity: .1; }
+  50%     { transform: translate(-50%,24px) scale(1.3); opacity: .2; }
+}
+@keyframes iconFloat {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%     { transform: translateY(-20px) rotate(8deg); }
+}
 @keyframes drawLine {
   from { stroke-dashoffset: 1000; }
   to   { stroke-dashoffset: 0; }

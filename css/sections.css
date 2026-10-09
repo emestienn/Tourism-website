@@ -3,29 +3,82 @@
   position: relative;
   min-height: calc(100vh - var(--header-h));
   display: grid; place-items: center;
-  padding: 80px 6%;
+  padding: 80px 6% 120px;
   overflow: hidden;
   background: var(--dark);
   color: white;
   text-align: center;
+  isolation: isolate;
 }
 .hero-bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(13,148,136,.5), transparent 55%),
-    radial-gradient(ellipse at 80% 70%, rgba(217,164,65,.35), transparent 55%),
-    linear-gradient(135deg, #0D2638, #123650);
-  background-size: 200% 200%;
-  animation: gradientShift 12s ease infinite;
+    radial-gradient(ellipse at 20% 30%, rgba(13,148,136,.55), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(217,164,65,.4), transparent 55%),
+    linear-gradient(135deg, #0D2638, #123650, #0D2638);
+  background-size: 200% 200%, 200% 200%, 300% 300%;
+  animation: gradientShift 14s ease infinite;
 }
 .hero-bg::after {
   content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(255,255,255,.08) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,.14) 1px, transparent 0);
   background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, black 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 50% 40%, black 10%, transparent 72%);
 }
+
+/* Floating gradient orbs — ambient motion + mouse parallax (applied on .hero-orbs) */
+.hero-orbs {
+  position: absolute; inset: 0; z-index: 0;
+  transition: transform .4s ease-out;
+  will-change: transform;
+}
+.hero-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+.hero-orb.o1 {
+  width: 380px; height: 380px; left: -100px; top: 8%;
+  background: radial-gradient(circle, var(--teal-2), transparent 70%);
+  opacity: .55;
+  animation: orbDrift1 16s ease-in-out infinite;
+}
+.hero-orb.o2 {
+  width: 440px; height: 440px; right: -120px; bottom: -60px;
+  background: radial-gradient(circle, var(--gold-2), transparent 70%);
+  opacity: .45;
+  animation: orbDrift2 20s ease-in-out infinite;
+}
+.hero-orb.o3 {
+  width: 280px; height: 280px; left: 50%; top: -80px;
+  background: radial-gradient(circle, #ffffff, transparent 70%);
+  opacity: .12;
+  animation: orbDrift3 18s ease-in-out infinite;
+}
+
+/* Floating travel-themed accent icons */
+.hero-icons { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hero-icon {
+  position: absolute; font-size: 1.9rem; opacity: .22;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+  animation: iconFloat 7s ease-in-out infinite;
+}
+.hero-icon.ic1 { top: 16%; left: 9%; animation-delay: 0s; }
+.hero-icon.ic2 { top: 70%; left: 15%; font-size: 1.4rem; animation-delay: 1.2s; }
+.hero-icon.ic3 { top: 22%; right: 11%; animation-delay: .6s; }
+.hero-icon.ic4 { top: 66%; right: 17%; font-size: 1.5rem; animation-delay: 1.8s; }
+
 .hero-content { position: relative; z-index: 2; max-width: 820px; }
 .hero-content p { color: rgba(255,255,255,.82); margin: 18px 0 32px; font-size: 1.1rem; }
+
+/* Staggered entrance animation for hero content */
+.hero-in {
+  opacity: 0;
+  animation: fadeUp .8s var(--t-slow) both;
+  animation-delay: var(--d, 0s);
+}
 
 .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .hero-cta .btn-outline { color: white; border-color: rgba(255,255,255,.35); }
@@ -40,10 +93,18 @@
 .hero-stats span { font-size: .85rem; color: rgba(255,255,255,.7); }
 
 .hero-scroll {
-  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-  font-size: 1.5rem; opacity: .6;
+  position: absolute; bottom: 96px; left: 50%; transform: translateX(-50%);
+  font-size: 1.5rem; opacity: .6; z-index: 2;
   animation: float 2.4s ease-in-out infinite;
 }
+
+/* Wave divider blending the hero into the next section */
+.hero-wave {
+  position: absolute; left: 0; right: 0; bottom: -1px;
+  width: 100%; height: 72px; z-index: 1;
+  display: block;
+}
+.hero-wave path { fill: var(--bg); transition: fill var(--t); }
 
 /* Planner */
 .planner-grid {
@@ -244,4 +305,8 @@
   .hero-stats b { font-size: 1.5rem; }
   .field-row { grid-template-columns: 1fr; }
   .quiz-card { padding: 24px; }
+  .hero { padding-bottom: 90px; }
+  .hero-wave { height: 44px; }
+  .hero-scroll { bottom: 64px; }
+  .hero-icon.ic2, .hero-icon.ic4 { display: none; }
 }
