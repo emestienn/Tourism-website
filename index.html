@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI Travel Uzbekistan — O'zbekiston bo'ylab aqlli sayohat rejalashtiruvchi">
+<meta name="theme-color" content="#0D2638">
+<title>AI Travel Uzbekistan — Aqlli sayohat rejalashtiruvchi</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/sections.css">
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div id="loader" class="loader">
+  <div class="loader-ring"></div>
+  <p>Sayohatingiz tayyorlanmoqda...</p>
+</div>
+
+<!-- Progress bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="site-header">
+  <a href="#home" class="logo">
+    <span class="logo-mark">✈</span>
+    <span class="logo-text">AI Travel <b>UZ</b></span>
+  </a>
+
+  <nav class="main-nav" id="mainNav">
+    <a href="#planner" data-i18n="navPlanner">Rejalashtiruvchi</a>
+    <a href="#explore" data-i18n="navExplore">Kashf et</a>
+    <a href="#budget" data-i18n="navBudget">Budjet</a>
+    <a href="#weather" data-i18n="navWeather">Ob-havo</a>
+    <a href="#quiz" data-i18n="navQuiz">Test</a>
+    <a href="#about" data-i18n="navAbout">Biz haqimizda</a>
+  </nav>
+
+  <div class="header-actions">
+    <div class="currency-widget" id="currencyWidget" title="Valyuta kursi">
+      <span>$1 =</span> <b id="usdRate">12 850</b> <span>so'm</span>
+    </div>
+    <select id="langSwitch" class="lang-switch" aria-label="Til">
+      <option value="uz">🇺🇿 UZ</option>
+      <option value="ru">🇷🇺 RU</option>
+      <option value="en">🇬🇧 EN</option>
+    </select>
+    <button id="themeToggle" class="icon-btn" aria-label="Rejim">
+      <span class="theme-icon">🌙</span>
+    </button>
+    <button id="menuToggle" class="icon-btn menu-toggle" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section id="home" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="tag" data-i18n="heroTag">SUN'IY INTELLEKT YORDAMIDA</div>
+    <h1 data-i18n="heroTitle">O'zbekistonni <span class="gradient">aqlli</span> kashf et</h1>
+    <p data-i18n="heroText">
+      Shahar, kun va budjetni tanlang — biz sizga shaxsiy marshrut, xarajat
+      hisobi va real tavsiyalar tayyorlaymiz.
+    </p>
+    <div class="hero-cta">
+      <a href="#planner" class="btn btn-primary" data-i18n="ctaStart">Sayohatni boshlash</a>
+      <a href="#explore" class="btn btn-ghost" data-i18n="ctaExplore">Joyları ko'rish</a>
+    </div>
+
+    <div class="hero-stats">
+      <div><b data-count="12">0</b><span data-i18n="statCities">Shahar</span></div>
+      <div><b data-count="150">0</b><span data-i18n="statPlaces">Joylar</span></div>
+      <div><b data-count="3">0</b><span data-i18n="statLangs">Tillar</span></div>
+      <div><b data-count="100">0</b><span data-i18n="statFree">Bepul</span></div>
+    </div>
+  </div>
+  <a href="#planner" class="hero-scroll">↓</a>
+</section>
+
+<!-- ============ PLANNER ============ -->
+<section id="planner" class="section">
+  <div class="section-head">
+    <div class="tag" data-i18n="assistantTag">SENING SAYOHAT YORDAMCHING</div>
+    <h2 data-i18n="plannerTitle">Shaxsiy sayohat rejangni tuz ✨</h2>
+    <p data-i18n="plannerText">
+      Shahar, kunlar, budjet va qiziqishlaringni tanla. AI senga optimal marshrut tuzadi.
+    </p>
+  </div>
+
+  <div class="planner-grid">
+    <form id="travelForm" class="card form-card">
+      <div class="field">
+        <label for="city" data-i18n="cityLabel">Qaysi manzilga?</label>
+        <select id="city"></select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="days" data-i18n="daysLabel">Necha kun?</label>
+          <select id="days">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="travelers" data-i18n="travelersLabel">Necha kishi?</label>
+          <input id="travelers" type="number" min="1" max="20" value="1">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="budget" data-i18n="dailyBudgetLabel">Bir kunlik budjet (so'm)</label>
+        <select id="budget">
+          <option value="200000">Tejamkor — 200 000</option>
+          <option value="500000" selected>O'rtacha — 500 000</option>
+          <option value="1000000">Qulay — 1 000 000</option>
+          <option value="2000000">Premium — 2 000 000</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label data-i18n="interestsLabel">Qiziqishlaring</label>
+        <div class="chips" id="interests">
+          <button type="button" class="chip" data-value="history" data-i18n="intHistory">🏛 Tarix</button>
+          <button type="button" class="chip" data-value="nature" data-i18n="intNature">🏔 Tabiat</button>
+          <button type="button" class="chip" data-value="food" data-i18n="intFood">🍽 Gastronomiya</button>
+          <button type="button" class="chip" data-value="adventure" data-i18n="intAdventure">🎒 Sarguzasht</button>
+          <button type="button" class="chip" data-value="photo" data-i18n="intPhoto">📸 Fotosurat</button>
+          <button type="button" class="chip" data-value="shopping" data-i18n="intShopping">🛍 Shopping</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="startDate" data-i18n="startDateLabel">Boshlanish sanasi</label>
+        <input id="startDate" type="date">
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit" data-i18n="makePlan">
+        ✨ Rejamni tuz
+      </button>
+    </form>
+
+    <div class="result-wrap">
+      <div class="result card" id="result" aria-live="polite">
+        <div class="result-empty">
+          <div class="result-empty-icon">🗺</div>
+          <p data-i18n="resultEmpty">Formani to'ldiring — marshrutingiz shu yerda paydo bo'ladi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPLORE (MAP + PLACES) ============ -->
+<section id="explore" class="section section-alt">
+  <div class="section-head">
+    <div class="tag" data-i18n="exploreTag">KASHF ET</div>
+    <h2 data-i18n="exploreTitle">Interaktiv xarita</h2>
+    <p data-i18n="exploreText">Shaharni tanlang — diqqatga sazovor joylarni xaritada ko'ring.</p>
+  </div>
+
+  <div class="explore-toolbar">
+    <input type="search" id="placeSearch" class="input" placeholder="Joy qidirish..." data-i18n-placeholder="searchPlaceholder">
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" data-filter="all" data-i18n="fAll">Barchasi</button>
+      <button class="chip" data-filter="history" data-i18n="fHistory">Tarixiy</button>
+      <button class="chip" data-filter="nature" data-i18n="fNature">Tabiat</button>
+      <button class="chip" data-filter="food" data-i18n="fFood">Ovqat</button>
+      <button class="chip" data-filter="museum" data-i18n="fMuseum">Muzey</button>
+    </div>
+  </div>
+
+  <div class="explore-grid">
+    <div id="map" class="map"></div>
+    <div class="places-list" id="placesList"></div>
+  </div>
+</section>
+
+<!-- ============ BUDGET ============ -->
+<section id="budget" class="section">
+  <div class="section-head">
+    <h2 data-i18n="budgetTitle">💰 Budjet kalkulyatori</h2>
+    <p data-i18n="budgetSubtitle">Xarajatlarni alohida hisoblang va valyutada ko'ring.</p>
+  </div>
+
+  <div class="extra-grid">
+    <div class="card panel">
+      <h3 data-i18n="costTitle">Xarajatlar</h3>
+
+      <div class="currency-toggle" id="currencyToggle">
+        <button class="active" data-cur="UZS">so'm</button>
+        <button data-cur="USD">$ USD</button>
+        <button data-cur="EUR">€ EUR</button>
+        <button data-cur="RUB">₽ RUB</button>
+      </div>
+
+      <div class="money-fields">
+        <div><label for="transport" data-i18n="transportLabel">Transport</label><input id="transport" type="number" min="0" value="100000"></div>
+        <div><label for="hotel" data-i18n="hotelLabel">Mehmonxona</label><input id="hotel" type="number" min="0" value="300000"></div>
+        <div><label for="food" data-i18n="foodLabel">Ovqatlanish</label><input id="food" type="number" min="0" value="150000"></div>
+        <div><label for="tickets" data-i18n="ticketsLabel">Chipta / muzey</label><input id="tickets" type="number" min="0" value="50000"></div>
+        <div><label for="guide" data-i18n="guideLabel">Gid / ekskursiya</label><input id="guide" type="number" min="0" value="0"></div>
+        <div><label for="souvenirs" data-i18n="souvenirLabel">Sovg'alar</label><input id="souvenirs" type="number" min="0" value="0"></div>
+        <div><label for="other" data-i18n="otherLabel">Boshqa</label><input id="other" type="number" min="0" value="0"></div>
+      </div>
+
+      <div class="total" id="budgetTotal">
+        <span data-i18n="totalLabel">Jami:</span>
+        <b>600 000 so'm</b>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="resetBudget" type="button" data-i18n="reset">Qayta boshlash</button>
+        <button class="btn btn-outline" id="exportBudget" type="button" data-i18n="export">Eksport (CSV)</button>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <h3 data-i18n="checkTitle">🎒 Safar chek-listi</h3>
+      <p data-i18n="checkText">Tayyor bo'lgan narsalarni belgilab bor.</p>
+
+      <div class="checklist" id="checklist"></div>
+
+      <div class="progress-wrap">
+        <p id="checkProgress">Tayyor: 0 / 7</p>
+        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost small" id="clearChecks" type="button" data-i18n="clearChecks">Tozalash</button>
+        <button class="btn btn-outline small" id="addCheckItem" type="button" data-i18n="addItem">+ Qo'shish</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WEATHER ============ -->
+<section id="weather" class="section section-alt">
+  <div class="section-head">
+    <h2 data-i18n="weatherTitle">🌤 Ob-havo va eng yaxshi mavsum</h2>
+    <p data-i18n="weatherSubtitle">Shaharlar bo'yicha oylik ob-havo ma'lumoti va sayohat uchun tavsiya.</p>
+  </div>
+  <div class="weather-grid" id="weatherGrid"></div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="section">
+  <div class="section-head">
+    <div class="tag" data-i18n="quizTag">AI TAVSIYA</div>
+    <h2 data-i18n="quizTitle">Qaysi shahar senga mos?</h2>
+    <p data-i18n="quizText">5 savolga javob ber — AI senga eng mos manzilni tavsiya qiladi.</p>
+  </div>
+
+  <div class="quiz-card card" id="quizCard"></div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="section section-alt">
+  <div class="card panel about-panel">
+    <h2 data-i18n="aboutTitle">Nega AI Travel Uzbekistan?</h2>
+    <p data-i18n="aboutText">
+      Bizning maqsad — O'zbekistonni kashf etishni har bir kishi uchun oson,
+      arzon va qulay qilish. Bir joyda: marshrut, budjet, ob-havo, xarita,
+      valyuta va til. Internet yo'q bo'lsa ham ishlaydi.
+    </p>
+    <div class="feature-grid">
+      <div class="feature"><span>🧠</span><b data-i18n="f1t">AI marshrut</b><small data-i18n="f1s">Qiziqishga mos reja</small></div>
+      <div class="feature"><span>💰</span><b data-i18n="f2t">Real budjet</b><small data-i18n="f2s">Aniq narxlar</small></div>
+      <div class="feature"><span>🌐</span><b data-i18n="f3t">3 tilda</b><small data-i18n="f3s">UZ / RU / EN</small></div>
+      <div class="feature"><span>📴</span><b data-i18n="f4t">Offline</b><small data-i18n="f4s">PWA qo'llab-quvvatlash</small></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="logo"><span class="logo-mark">✈</span> <span class="logo-text">AI Travel <b>UZ</b></span></div>
+      <p data-i18n="footerText">O'zbekistonni kashf etishning aqlli usuli.</p>
+    </div>
+    <div>
+      <h4 data-i18n="footerNav">Bo'limlar</h4>
+      <a href="#planner" data-i18n="navPlanner">Rejalashtiruvchi</a>
+      <a href="#explore" data-i18n="navExplore">Kashf et</a>
+      <a href="#budget" data-i18n="navBudget">Budjet</a>
+    </div>
+    <div>
+      <h4 data-i18n="footerContact">Aloqa</h4>
+      <a href="mailto:hello@aitravel.uz">hello@aitravel.uz</a>
+      <a href="#">Telegram</a>
+      <a href="#">GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 AI Travel Uzbekistan — Hackathon loyihasi</p>
+  </div>
+</footer>
+
+<a class="backtop" href="#home" aria-label="Yuqoriga">↑</a>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/data.js"></script>
+<script src="js/planner.js"></script>
+<script src="js/budget.js"></script>
+<script src="js/currency.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/checklist.js"></script>
+<script src="js/map.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/offline.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

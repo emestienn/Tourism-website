@@ -1,0 +1,60 @@
+:root {
+  /* Brand */
+  --dark: #0D2638;
+  --dark-2: #123650;
+  --teal: #0D9488;
+  --teal-2: #14B8A6;
+  --gold: #D9A441;
+  --gold-2: #F0C674;
+
+  /* Surfaces */
+  --bg: #F7F5EF;
+  --bg-alt: #EFEBE0;
+  --card: #FFFFFF;
+  --border: #E3DED0;
+
+  /* Text */
+  --text: #173247;
+  --muted: #637582;
+
+  /* State */
+  --success: #16A34A;
+  --danger: #DC2626;
+
+  /* Gradients */
+  --grad-hero: linear-gradient(135deg, #0D2638 0%, #0D9488 100%);
+  --grad-gold: linear-gradient(135deg, #D9A441 0%, #F0C674 100%);
+  --grad-text: linear-gradient(90deg, #14B8A6, #D9A441);
+
+  /* Radius */
+  --r-sm: 8px;
+  --r: 14px;
+  --r-lg: 22px;
+  --r-full: 999px;
+
+  /* Shadow */
+  --sh-sm: 0 2px 8px rgba(13,38,56,.06);
+  --sh: 0 10px 30px rgba(13,38,56,.10);
+  --sh-lg: 0 20px 50px rgba(13,38,56,.18);
+
+  /* Motion */
+  --t-fast: .15s ease;
+  --t: .28s cubic-bezier(.4,0,.2,1);
+  --t-slow: .6s cubic-bezier(.22,1,.36,1);
+
+  /* Layout */
+  --container: 1240px;
+  --header-h: 72px;
+}
+
+body.night {
+  --bg: #0B141C;
+  --bg-alt: #101C27;
+  --card: #16232F;
+  --border: #22303D;
+  --text: #F0F6F8;
+  --muted: #B7C6CE;
+  --sh-sm: 0 2px 8px rgba(0,0,0,.3);
+  --sh: 0 10px 30px rgba(0,0,0,.4);
+  --sh-lg: 0 20px 50px rgba(0,0,0,.55);
+}
